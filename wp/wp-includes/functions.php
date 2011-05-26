@@ -1876,7 +1876,7 @@ function is_blog_installed() {
 			if ( defined('WP_REPAIRING') )
 				return true;
 			// Die with a DB error.
-			$wpdb->error = sprintf( /*WP_I18N_NO_TABLES*/'一些数据表无效，数据库也许需要 <a href="%s">修复</a>。'/*/WP_I18N_NO_TABLES*/, 'maint/repair.php?referrer=is_blog_installed' );
+			$wpdb->error = sprintf( /*WP_I18N_NO_TABLES*/'One or more database tables are unavailable.  The database may need to be <a href="%s">repaired</a>.'/*/WP_I18N_NO_TABLES*/, 'maint/repair.php?referrer=is_blog_installed' );
 			dead_db();
 		}
 	}
@@ -4480,6 +4480,18 @@ function wp_find_hierarchy_loop_tortoise_hare( $callback, $start, $override = ar
 	}
 
 	return false;
+}
+
+/**
+ * Send a HTTP header to limit rendering of pages to same origin iframes.
+ *
+ * @link https://developer.mozilla.org/en/the_x-frame-options_response_header
+ *
+ * @since 3.1.3
+ * @return none
+ */
+function send_frame_options_header() {
+	@header( 'X-Frame-Options: SAMEORIGIN' );
 }
 
 ?>
