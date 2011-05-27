@@ -58,3 +58,5 @@ $required_php_version = '4.3';
  * @global string $required_mysql_version
  */
 $required_mysql_version = '4.1.2';
+
+$wp_local_package = 'zh_CN';

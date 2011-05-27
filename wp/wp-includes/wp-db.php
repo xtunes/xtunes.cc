@@ -578,7 +578,7 @@ class wpdb {
 	function set_prefix( $prefix, $set_table_names = true ) {
 
 		if ( preg_match( '|[^a-z0-9_]|i', $prefix ) )
-			return new WP_Error('invalid_db_prefix', /*WP_I18N_DB_BAD_PREFIX*/'Invalid database prefix'/*/WP_I18N_DB_BAD_PREFIX*/);
+			return new WP_Error('invalid_db_prefix', /*WP_I18N_DB_BAD_PREFIX*/'无效的数据库表前缀'/*/WP_I18N_DB_BAD_PREFIX*/);
 
 		$old_prefix = is_multisite() ? '' : $prefix;
 
@@ -749,14 +749,14 @@ class wpdb {
 
 		if ( !@mysql_select_db( $db, $dbh ) ) {
 			$this->ready = false;
-			$this->bail( sprintf( /*WP_I18N_DB_SELECT_DB*/'<h1>Can&#8217;t select database</h1>
-<p>We were able to connect to the database server (which means your username and password is okay) but not able to select the <code>%1$s</code> database.</p>
+			$this->bail( sprintf( /*WP_I18N_DB_SELECT_DB*/'<h1>无法选择数据库</h1>
+<p>我们可以和数据库服务器建立连接（说明您提供的用户名和密码正确），但无法选择（select） <code>%1$s</code> 数据库。</p>
 <ul>
-<li>Are you sure it exists?</li>
-<li>Does the user <code>%2$s</code> have permission to use the <code>%1$s</code> database?</li>
-<li>On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?</li>
+<li>您确认数据库存在？</li>
+<li>您确认用户 <code>%2$s</code> 拥有使用 <code>%1$s</code> 数据库的权限？</li>
+<li>在某些系统上您的数据库名可能还包含了您用户名的前缀，例如 <code>username_%1$s</code>，问题会不会出在这里？</li>
 </ul>
-<p>If you don\'t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="http://wordpress.org/support/">WordPress Support Forums</a>.</p>'/*/WP_I18N_DB_SELECT_DB*/, $db, $this->dbuser ), 'db_select_fail' );
+<p>如果您不知道如何设置一个数据库，您应该<strong>联系您的主机管理员</strong>。如果所有办法还没有解决您的问题，您可以在 <a href="http://wordpress.org/support/">WordPress 支持论坛</a>上寻求帮助。</p>'/*/WP_I18N_DB_SELECT_DB*/, $db, $this->dbuser ), 'db_select_fail' );
 			return;
 		}
 	}
@@ -927,9 +927,9 @@ class wpdb {
 			return false;
 
 		if ( $caller = $this->get_caller() )
-			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR_FULL*/'WordPress database error %1$s for query %2$s made by %3$s'/*/WP_I18N_DB_QUERY_ERROR_FULL*/, $str, $this->last_query, $caller );
+			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR_FULL*/'WordPress 数据库查询 %2$s 时发生 %1$s 错误，这是由 %3$s 查询的。'/*/WP_I18N_DB_QUERY_ERROR_FULL*/, $str, $this->last_query, $caller );
 		else
-			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR*/'WordPress database error %1$s for query %2$s'/*/WP_I18N_DB_QUERY_ERROR*/, $str, $this->last_query );
+			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR*/'查询 %2$s 时，WordPress 数据库发生错误 %1$s'/*/WP_I18N_DB_QUERY_ERROR*/, $str, $this->last_query );
 
 		if ( function_exists( 'error_log' )
 			&& ( $log_file = @ini_get( 'error_log' ) )
@@ -1039,16 +1039,16 @@ class wpdb {
 		}
 
 		if ( !$this->dbh ) {
-			$this->bail( sprintf( /*WP_I18N_DB_CONN_ERROR*/"
-<h1>Error establishing a database connection</h1>
-<p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>%s</code>. This could mean your host's database server is down.</p>
+			$this->bail( sprintf( /*WP_I18N_DB_CONN_ERROR*/'
+<h1>数据库连接错误</h1>
+<p>您在 <code>wp-config.php</code> 文件中提供的数据库用户名和密码可能不正确，或者无法连接到 <code>%s</code> 上数据库服务器，这意味着您的主机数据库服务器已停止工作。</p>
 <ul>
-	<li>Are you sure you have the correct username and password?</li>
-	<li>Are you sure that you have typed the correct hostname?</li>
-	<li>Are you sure that the database server is running?</li>
+	<li>您确认您提供的用户名和密码正确么？</li>
+	<li>您确认您提供的主机名正确么？</li>
+	<li>您确认数据库服务器正常运行么？</li>
 </ul>
-<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>
-"/*/WP_I18N_DB_CONN_ERROR*/, $this->dbhost ), 'db_connect_fail' );
+<p>如果您无法确定这些问题，请联系您的主机管理员。如果您仍需帮助，请访问 <a href=\'http://wordpress.org/support/\'>WordPress 支持论坛</a>。</p>
+'/*/WP_I18N_DB_CONN_ERROR*/, $this->dbhost ), 'db_connect_fail' );
 
 			return;
 		}
@@ -1325,7 +1325,7 @@ class wpdb {
 		} elseif ( $output == ARRAY_N ) {
 			return $this->last_result[$y] ? array_values( get_object_vars( $this->last_result[$y] ) ) : null;
 		} else {
-			$this->print_error(/*WP_I18N_DB_GETROW_ERROR*/" \$db->get_row(string query, output type, int offset) -- Output type must be one of: OBJECT, ARRAY_A, ARRAY_N"/*/WP_I18N_DB_GETROW_ERROR*/);
+			$this->print_error(/*WP_I18N_DB_GETROW_ERROR*/' $db->get_row(string query, output type, int offset) -- 输出类型必须是以下类型中的一个：OBJECT, ARRAY_A, ARRAY_N'/*/WP_I18N_DB_GETROW_ERROR*/);
 		}
 	}
 
